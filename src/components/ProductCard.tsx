@@ -1,36 +1,30 @@
-import { Badge, Box, Image } from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
+import { Box, GridItem, Image } from '@chakra-ui/react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { IProduct } from '../interfaces/product';
 interface ProductCardProps {
   product: IProduct;
 }
 export default function ProductCard({ product }: ProductCardProps) {
+  const location = useLocation();
   return (
-    <Box
+    <GridItem
+      w="100%"
       as="li"
-      maxW="sm"
       borderWidth="1px"
       borderRadius="lg"
+      borderColor="glitter"
       overflow="hidden"
     >
-      <Image src={product.image} alt={product.title} />
+      <Image
+        src={product.thumbnail}
+        alt={product.title}
+        objectFit="cover"
+        w="100%"
+        h="200px"
+      />
 
       <Box p="6">
-        <Box display="flex" alignItems="baseline">
-          <Badge borderRadius="full" px="2" colorScheme="teal">
-            New
-          </Badge>
-          <Box
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="xs"
-            textTransform="uppercase"
-            ml="2"
-          >
-            {/* {property.beds} beds &bull; {property.baths} baths */}
-          </Box>
-        </Box>
-
         <Box
           mt="1"
           fontWeight="semibold"
@@ -38,30 +32,28 @@ export default function ProductCard({ product }: ProductCardProps) {
           lineHeight="tight"
           noOfLines={1}
         >
-          {/* {property.title} */}
+          <NavLink to={`/product/${product.id}`} state={{ from: location }}>
+            {product.title}
+          </NavLink>
         </Box>
 
         <Box>
-          {/* {property.formattedPrice} */}
           <Box as="span" color="gray.600" fontSize="sm">
-            / wk
+            {product.price}$
           </Box>
         </Box>
 
-        {/* <Box display="flex" mt="2" alignItems="center">
+        <Box display="flex" mt="2" alignItems="center">
           {Array(5)
             .fill('')
             .map((_, i) => (
               <StarIcon
                 key={i}
-                color={i < property.rating ? 'teal.500' : 'gray.300'}
+                color={i < product.rating ? 'powder' : 'gray.300'}
               />
             ))}
-          <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {property.reviewCount} reviews
-          </Box>
-        </Box> */}
+        </Box>
       </Box>
-    </Box>
+    </GridItem>
   );
 }

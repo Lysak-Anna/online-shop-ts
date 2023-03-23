@@ -1,9 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
 import { IProduct } from '../interfaces/product';
-// axios.defaults.baseURL = `https://fakestoreapi.com/products`;
-export const getProducts = async (): Promise<IProduct[]> => {
-  const response: AxiosResponse<IProduct[]> = await axios.get(
-    'https://fakestoreapi.com/products'
+type DatabaseDate = {
+  limit: number;
+  products: IProduct[];
+  skip: number;
+  total: number;
+};
+axios.defaults.baseURL = `https://dummyjson.com/products`;
+export const getProducts = async (): Promise<DatabaseDate> => {
+  const response: AxiosResponse<DatabaseDate> = await axios.get(
+    'https://dummyjson.com/products'
   );
   return response.data;
 };

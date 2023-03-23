@@ -8,14 +8,15 @@ import { IProduct } from './../interfaces/product';
 
 export default function HomePage() {
   const [products, setProducts] = useState<IProduct[]>([]);
-  //   const { error } = useQuery(['products'], async () => {
-  //     const data = await getProducts();
-  //     setProducts(data);
-  //   });
+  const { error } = useQuery('products', async () => {
+    const data = await getProducts();
+    setProducts(data.products);
+  });
+
   return (
-    <Container p="4" h="100vh">
+    <Container maxW="100%" p="4">
       <CategoryList />
-      <ProductList products={products} />
+      {products?.length > 0 && <ProductList products={products} />}
     </Container>
   );
 }

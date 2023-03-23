@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
+import ProductPage from './pages/ProductPage';
+
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -27,9 +29,9 @@ function App() {
               element={
                 <PrivateRoute redirectTo="/login" component={<Account />} />
               }
-            />
-            <Route path="product/:productId" element={<ProductDetailPage />} />
-            <Route
+            /> */}
+            <Route path="product/:productId" element={<ProductPage />} />
+            {/* <Route
               path="cart"
               element={
                 <PrivateRoute redirectTo="/login" component={<Cart />} />
