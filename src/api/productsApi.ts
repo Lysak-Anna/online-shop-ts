@@ -13,9 +13,13 @@ export const getProducts = async (): Promise<DatabaseDate> => {
   );
   return response.data;
 };
+export const getAllProducts = async (skip: number, limit: number) => {
+  const response = await axios(`?skip=${skip}&limit=${limit}`);
+  return response.data;
+};
 export const getProductsByCategory = async (category: string) => {
-  const products = await axios(`/category/${category}`);
-  return products;
+  const response = await axios(`/category/${category}`);
+  return response.data;
 };
 
 export const getProductDetailById = async (productId: string) => {

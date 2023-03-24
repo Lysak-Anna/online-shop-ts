@@ -1,10 +1,19 @@
-import { extendTheme } from "@chakra-ui/react";
-const colors = {
-  glitter: "#e2f0f9",
-  powder: "#b0dde4",
-  blue: "#286fb4",
-  light: "#ffffff",
-  pink: "#df4c73",
-};
+import { extendTheme } from '@chakra-ui/react';
 
-export const theme = extendTheme({ colors });
+export const theme = extendTheme({
+  colors: {
+    accent: '#e9322e',
+    brown: '#45433e',
+    gray: '#959794',
+    white: '#ffffff',
+    black: '#19171a',
+  },
+  styles: {
+    global: {
+      'html, body': {
+        color: 'black',
+        lineHeight: 'tall',
+      },
+    },
+  },
+});

@@ -14,3 +14,6 @@ export interface IProduct {
 export interface IProductsList {
   products: IProduct[];
 }
+export interface CarouselComponentProps {
+  product: IProduct | null;
+}

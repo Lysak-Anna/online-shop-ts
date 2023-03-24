@@ -1,5 +1,5 @@
 import { StarIcon } from '@chakra-ui/icons';
-import { Box, GridItem, Image } from '@chakra-ui/react';
+import { Box, GridItem, Image, Text } from '@chakra-ui/react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { IProduct } from '../interfaces/product';
 interface ProductCardProps {
@@ -7,6 +7,7 @@ interface ProductCardProps {
 }
 export default function ProductCard({ product }: ProductCardProps) {
   const location = useLocation();
+
   return (
     <GridItem
       w="100%"
@@ -33,7 +34,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           noOfLines={1}
         >
           <NavLink to={`/product/${product.id}`} state={{ from: location }}>
-            {product.title}
+            <Text
+              _hover={{ color: 'accent', textDecor: 'underline' }}
+              textTransform="capitalize"
+            >
+              {product.title}
+            </Text>
           </NavLink>
         </Box>
 
@@ -49,9 +55,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             .map((_, i) => (
               <StarIcon
                 key={i}
-                color={i < product.rating ? 'powder' : 'gray.300'}
+                color={i < product.rating ? '#ffdf00' : 'gray.300'}
               />
             ))}
+          <Text ml="8px">{product.rating}</Text>
         </Box>
       </Box>
     </GridItem>
