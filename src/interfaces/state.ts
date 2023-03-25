@@ -11,7 +11,10 @@ export interface User {
   isLoggedIn: boolean;
 }
 export interface RootState {
-  cart: CartItem[];
+  cart: {
+    cart: CartItem[];
+  };
+
   categories: {
     categories: string;
   };

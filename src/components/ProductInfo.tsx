@@ -39,13 +39,13 @@ export default function ProductInfo(props: CarouselComponentProps) {
     price: number;
     id: number;
   }) => {
-    if (!isUserLoggedIn) {
-      console.log('hello');
-      setOverlay(<OverlayOne />);
-      onOpen();
-    } else {
-      dispatch(addProduct({ title, price, id }));
-    }
+    // if (!isUserLoggedIn) {
+    //   console.log('hello');
+    //   setOverlay(<OverlayOne />);
+    //   onOpen();
+    // } else {
+    dispatch(addProduct({ title, price, id }));
+    // }
   };
   if (!product) {
     return null;
@@ -58,7 +58,7 @@ export default function ProductInfo(props: CarouselComponentProps) {
       </CardHeader>
 
       <CardBody>
-        <Stack divider={<StackDivider color="gray" />} spacing="5">
+        <Stack divider={<StackDivider />} spacing="5">
           <Box>
             <Heading size="xs" textTransform="uppercase">
               Brand

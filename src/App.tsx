@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
-
+import Cart from './pages/Cart';
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
               }
             /> */}
             <Route path="product/:productId" element={<ProductPage />} />
+            <Route path="cart" element={<Cart />} />
             {/* <Route
               path="cart"
               element={

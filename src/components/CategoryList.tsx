@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -36,16 +37,20 @@ export default function CategoryList() {
         <DrawerContent>
           <DrawerBody paddingTop={5}>
             {categories.map((category, index) => (
-              <Text
-                key={index}
-                cursor="pointer"
-                fontSize={20}
-                textTransform="capitalize"
-                _hover={{ color: 'accent', textDecor: 'underline' }}
-                onClick={() => onClickHandler(category)}
-              >
-                {category}
-              </Text>
+              <>
+                <Text
+                  key={index}
+                  cursor="pointer"
+                  fontSize={20}
+                  textTransform="capitalize"
+                  mt="10px"
+                  _hover={{ color: 'accent' }}
+                  onClick={() => onClickHandler(category)}
+                >
+                  {category}
+                  <Divider />
+                </Text>
+              </>
             ))}
           </DrawerBody>
         </DrawerContent>
