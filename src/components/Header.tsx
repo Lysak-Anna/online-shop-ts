@@ -1,6 +1,6 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { StyledCart, StyledUser } from './../Components.styled';
+import { StyledCart, StyledNavLink, StyledUser } from './../Components.styled';
 
 export default function Header() {
   return (
@@ -15,19 +15,29 @@ export default function Header() {
         color="white"
       >
         <Box>
-          <NavLink to="/">
-            <Text as="b" fontSize="20px">
+          <StyledNavLink to="/">
+            <Text as="b" fontSize="20px" mr={6}>
               Home
             </Text>
-          </NavLink>
+          </StyledNavLink>
+          <StyledNavLink to={'/login'}>
+            <Text as="b" fontSize="20px" mr={6}>
+              Sign In
+            </Text>
+          </StyledNavLink>
+          <StyledNavLink to={'/register'}>
+            <Text as="b" fontSize="20px">
+              Sign Up
+            </Text>
+          </StyledNavLink>
         </Box>
         <Spacer />
-        <Link to="/account">
+        <StyledNavLink to="/account">
           <StyledUser />
-        </Link>
-        <Link to="/cart">
+        </StyledNavLink>
+        <StyledNavLink to="/cart">
           <StyledCart />
-        </Link>
+        </StyledNavLink>
       </Flex>
       <Outlet />
     </>

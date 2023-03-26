@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       as="li"
       borderWidth="1px"
       borderRadius="lg"
-      borderColor="glitter"
+      borderColor="gray"
       overflow="hidden"
     >
       <Image
@@ -55,7 +55,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             .map((_, i) => (
               <StarIcon
                 key={i}
-                color={i < product.rating ? '#ffdf00' : 'gray.300'}
+                color={i < product.rating ? '#ffdf00' : 'gray'}
               />
             ))}
           <Text ml="8px">{product.rating}</Text>

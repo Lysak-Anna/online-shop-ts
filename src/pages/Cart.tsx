@@ -37,25 +37,32 @@ export default function Cart() {
   };
   return (
     <Box p="4">
-      <TableContainer borderWidth="1px" p="4" borderRadius="lg">
+      <TableContainer
+        borderWidth="1px"
+        p="4"
+        borderRadius="lg"
+        borderColor="gray"
+      >
         {products.length > 0 ? (
           <>
             <Table size="md">
               <Thead>
                 <Tr>
-                  <Th>Product</Th>
-                  <Th>Price</Th>
-                  <Th textAlign="center">Count</Th>
-                  <Th>Sum</Th>
-                  <Th></Th>
+                  <Th borderColor="gray">Product</Th>
+                  <Th borderColor="gray">Price</Th>
+                  <Th textAlign="center" borderColor="gray">
+                    Count
+                  </Th>
+                  <Th borderColor="gray">Sum</Th>
+                  <Th borderColor="gray"></Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {products.map(({ id, title, price, count }) => (
                   <Tr key={id}>
-                    <Td>{title}</Td>
-                    <Td>{price}$</Td>
-                    <Td p="1">
+                    <Td borderColor="gray">{title}</Td>
+                    <Td borderColor="gray">{price}$</Td>
+                    <Td p="1" borderColor="gray">
                       {
                         <Flex justifyContent="space-around">
                           <button
@@ -65,7 +72,14 @@ export default function Cart() {
                           >
                             <MinusIcon w="10px" />
                           </button>
-                          <p>{count}</p>
+                          <Box
+                            borderWidth="1px"
+                            borderColor="gray"
+                            borderRadius="md"
+                            p="2"
+                          >
+                            {count}
+                          </Box>
                           <button
                             type="button"
                             onClick={() => increase(id)}
@@ -76,8 +90,8 @@ export default function Cart() {
                         </Flex>
                       }
                     </Td>
-                    <Td>{price * count}$</Td>
-                    <Td>
+                    <Td borderColor="gray">{price * count}$</Td>
+                    <Td borderColor="gray">
                       {
                         <DeleteIcon
                           onClick={() => onDeleteProduct(id)}
@@ -99,6 +113,7 @@ export default function Cart() {
               mr="auto"
               display="block"
               onClick={onOpen}
+              _hover={{ boxShadow: '2xl' }}
             >
               Buy now
             </Button>

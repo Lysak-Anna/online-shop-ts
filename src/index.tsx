@@ -8,6 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import './index.css';
 import App from './App';
 import { theme } from '../src/theme';
+import './firebase/firebase';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
