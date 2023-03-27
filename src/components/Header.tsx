@@ -1,8 +1,16 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
-import { StyledCart, StyledNavLink, StyledUser } from './../Components.styled';
+import { useSelector } from 'react-redux';
+import { Outlet } from 'react-router-dom';
+import { getProductFromState } from '../redux/cart/selectors';
+import {
+  ProductAmount,
+  StyledCart,
+  StyledNavLink,
+  StyledUser,
+} from './../Components.styled';
 
 export default function Header() {
+  const cart = useSelector(getProductFromState);
   return (
     <>
       <Flex
@@ -36,7 +44,10 @@ export default function Header() {
           <StyledUser />
         </StyledNavLink>
         <StyledNavLink to="/cart">
-          <StyledCart />
+          <Box position="relative">
+            <StyledCart />
+            <ProductAmount>{cart.length}</ProductAmount>
+          </Box>
         </StyledNavLink>
       </Flex>
       <Outlet />

@@ -39,13 +39,12 @@ export default function ProductInfo(props: CarouselComponentProps) {
     price: number;
     id: number;
   }) => {
-    // if (!isUserLoggedIn) {
-    //   console.log('hello');
-    //   setOverlay(<OverlayOne />);
-    //   onOpen();
-    // } else {
-    dispatch(addProduct({ title, price, id }));
-    // }
+    if (!isUserLoggedIn) {
+      setOverlay(<OverlayOne />);
+      onOpen();
+    } else {
+      dispatch(addProduct({ title, price, id }));
+    }
   };
   if (!product) {
     return null;

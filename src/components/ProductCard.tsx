@@ -2,6 +2,7 @@ import { StarIcon } from '@chakra-ui/icons';
 import { Box, GridItem, Image, Text } from '@chakra-ui/react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { IProduct } from '../interfaces/product';
+
 interface ProductCardProps {
   product: IProduct;
 }

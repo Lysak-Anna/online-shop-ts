@@ -7,10 +7,18 @@ export default function CarouselComponent(props: CarouselComponentProps) {
   const { product } = props;
   return (
     <Box maxW="50%" p="4" mr="5">
-      <Carousel>
+      <Carousel autoPlay>
         {product?.images.map((img, index) => (
           <Box as="div" key={index}>
-            <img src={img} alt={img} />
+            <img
+              src={img}
+              alt={img}
+              style={{
+                maxWidth: '400px',
+                maxHeight: '400px',
+                objectFit: 'contain',
+              }}
+            />
           </Box>
         ))}
       </Carousel>

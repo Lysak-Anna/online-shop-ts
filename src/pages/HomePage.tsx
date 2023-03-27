@@ -3,7 +3,7 @@ import ProductList from '../components/ProductList';
 import PriceRange from '../components/PriceRange';
 import { useQuery } from 'react-query';
 import { Box, Button, Container, Select } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   getProducts,
   getAllProducts,
@@ -12,12 +12,18 @@ import {
 import { IProduct } from '../interfaces/product';
 import { useSelector } from 'react-redux';
 import { getCategoryFromState } from '../redux/products/selectors';
+import { getDataFromLocalStorage } from './../helpers/getDataFromLocalStorage';
 
 export default function HomePage() {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const selectedCategory = useSelector(getCategoryFromState);
-
+  const [products, setProducts] = useState<IProduct[]>(
+    getDataFromLocalStorage('products') ?? []
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [range, setRange] = useState(
+    getDataFromLocalStorage('range') ?? [10, 2000]
+  );
+  const [filter, setFilter] = useState(getDataFromLocalStorage('filter') ?? '');
   const getProductsList = async (category: string) => {
     if (category === 'all') {
       const data = await getProducts();
@@ -29,7 +35,9 @@ export default function HomePage() {
   };
 
   const { isError } = useQuery(['products', selectedCategory], async () => {
-    await getProductsList(selectedCategory);
+    if (products.length === 0) {
+      await getProductsList(selectedCategory);
+    }
   });
 
   const onClickHandler = async () => {
@@ -40,8 +48,17 @@ export default function HomePage() {
     setProducts(prevState => [...prevState, ...data.products]);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    return () => {
+      localStorage.setItem('filter', JSON.stringify(filter));
+      localStorage.setItem('products', JSON.stringify(products));
+      localStorage.setItem('range', JSON.stringify(range));
+    };
+  }, [filter, products, range]);
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
+    setFilter(event.target.value);
     switch (event.target.value) {
       case 'rating':
         const sortByRating = [...products].sort(
@@ -65,6 +82,7 @@ export default function HomePage() {
         return products;
     }
   };
+  const onRangeHandler = () => {};
   return (
     <Container maxW="100%" p="4">
       <Box display="flex">
@@ -75,13 +93,18 @@ export default function HomePage() {
           borderColor="accent"
           focusBorderColor="accent"
           mr="4"
+          value={filter}
           onChange={onChangeHandler}
         >
           <option value="rating">From the highest rating</option>
           <option value="highest price">From the highest price</option>
           <option value="lowest price">From the lowest price</option>
         </Select>
-        <PriceRange products={products} setProducts={setProducts} />
+        <PriceRange
+          range={range}
+          setRange={setRange}
+          onClick={onRangeHandler}
+        />
       </Box>
       {products?.length > 0 && <ProductList products={products} />}
       {products?.length >= 30 && products?.length < 100 && (

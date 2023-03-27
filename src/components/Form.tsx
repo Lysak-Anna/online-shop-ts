@@ -25,8 +25,6 @@ type Inputs = {
 export default function Form({ title, handleClick }: any) {
   const {
     register,
-    handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<Inputs>({
     mode: 'all',

@@ -16,6 +16,7 @@ export const BackLinkArrow = styled(Link)`
   }
 `;
 export const StyledNavLink = styled(NavLink)`
+  &:hover,
   &.active {
     color: #e9322e;
   }
@@ -25,18 +26,31 @@ export const StyledLink = styled(Link)`
   color: #e9322e;
 `;
 export const StyledUser = styled(AiOutlineUser)`
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   &:hover {
     color: #e9322e;
   }
 `;
 export const StyledCart = styled(GiShoppingCart)`
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   &:hover {
     color: #e9322e;
   }
+`;
+export const ProductAmount = styled.span`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #e9322e;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 export const StyledGoogle = styled(FcGoogle)`
   margin-right: 8px;
