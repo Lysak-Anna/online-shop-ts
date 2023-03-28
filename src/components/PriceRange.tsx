@@ -9,13 +9,6 @@ import {
 } from '@chakra-ui/react';
 
 export default function PriceRange({ range, setRange, onClick }: any) {
-  // const onClickHandler = () => {
-  //   const filterPrice = products.filter(
-  //     (product: { price: number }) =>
-  //       product.price >= value[0] && product.price <= value[1]
-  //   );
-  //   setProducts(filterPrice);
-  // };
   return (
     <Box display="flex">
       <Box
@@ -56,7 +49,7 @@ export default function PriceRange({ range, setRange, onClick }: any) {
         color="white"
         variant="solid"
         _hover={{ boxShadow: '2xl' }}
-        onClick={onClick}
+        onClick={() => onClick()}
       >
         Ok
       </Button>

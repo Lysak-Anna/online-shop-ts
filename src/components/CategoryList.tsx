@@ -14,11 +14,12 @@ import { categories } from '../data/categories';
 import { useDispatch } from 'react-redux';
 import { changeCategory } from '../redux/products/productsCategoriesSlice';
 
-export default function CategoryList() {
+export default function CategoryList({ onChangeCategory }: any) {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onClickHandler = (category: string) => {
     dispatch(changeCategory(category));
+    onChangeCategory(category);
     onClose();
   };
   return (

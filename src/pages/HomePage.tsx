@@ -1,92 +1,95 @@
 import CategoryList from '../components/CategoryList';
 import ProductList from '../components/ProductList';
 import PriceRange from '../components/PriceRange';
+import NoResult from '../components/NoResult';
+
 import { useQuery } from 'react-query';
 import { Box, Button, Container, Select } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import {
-  getProducts,
-  getAllProducts,
-  getProductsByCategory,
-} from '../api/productsApi';
+import { useEffect, useState, useCallback } from 'react';
+import { getProducts, getAllProducts } from '../api/productsApi';
 import { IProduct } from '../interfaces/product';
 import { useSelector } from 'react-redux';
 import { getCategoryFromState } from '../redux/products/selectors';
 import { getDataFromLocalStorage } from './../helpers/getDataFromLocalStorage';
 
+import { getFilteredProducts, setData } from './../helpers/getFilteredProducts';
+import { throttle } from 'lodash';
 export default function HomePage() {
+  const localStorageData = getDataFromLocalStorage('products');
   const selectedCategory = useSelector(getCategoryFromState);
-  const [products, setProducts] = useState<IProduct[]>(
-    getDataFromLocalStorage('products') ?? []
-  );
+  const [products, setProducts] = useState<IProduct[]>(localStorageData ?? []);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [range, setRange] = useState(
     getDataFromLocalStorage('range') ?? [10, 2000]
   );
-  const [filter, setFilter] = useState(getDataFromLocalStorage('filter') ?? '');
-  const getProductsList = async (category: string) => {
-    if (category === 'all') {
+  const [filter, setFilter] = useState<string>(
+    getDataFromLocalStorage('filter') ?? ''
+  );
+  const [position, setPosition] = useState<number[]>(
+    getDataFromLocalStorage('position') ?? []
+  );
+  const { isError, isFetching } = useQuery('products', async () => {
+    if (!localStorageData) {
       const data = await getProducts();
       setProducts(data.products);
-      return;
-    }
-    const data = await getProductsByCategory(selectedCategory);
-    setProducts(data.products);
-  };
-
-  const { isError } = useQuery(['products', selectedCategory], async () => {
-    if (products.length === 0) {
-      await getProductsList(selectedCategory);
     }
   });
+
+  const handleScrollPosition = useCallback(
+    throttle(() => {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+      setPosition([scrollX, scrollY]);
+    }, 4000),
+    []
+  );
+  useEffect(() => {
+    window.scrollTo(position[0], position[1]);
+  }, []);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollPosition);
+    return () => {
+      localStorage.setItem('filter', JSON.stringify(filter));
+      localStorage.setItem('products', JSON.stringify(products));
+      localStorage.setItem('range', JSON.stringify(range));
+      localStorage.setItem('position', JSON.stringify(position));
+      window.removeEventListener('scroll', handleScrollPosition);
+    };
+  }, [filter, products, range, position, handleScrollPosition]);
+
+  const onChangeCategoryHandler = (selectedCategory: string) => {
+    getFilteredProducts(selectedCategory, setProducts, range, filter);
+  };
+
+  const onChangeFilterHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setFilter(event.target.value);
+    getFilteredProducts(
+      selectedCategory,
+      setProducts,
+      range,
+      event.target.value
+    );
+  };
+
+  const onRangeHandler = () => {
+    getFilteredProducts(selectedCategory, setProducts, range, filter);
+  };
 
   const onClickHandler = async () => {
     const skip = products.length;
     const limit = 20;
     setIsLoading(true);
     const data = await getAllProducts(skip, limit);
-    setProducts(prevState => [...prevState, ...data.products]);
+    setData([...products, ...data.products], setProducts, filter, range);
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    return () => {
-      localStorage.setItem('filter', JSON.stringify(filter));
-      localStorage.setItem('products', JSON.stringify(products));
-      localStorage.setItem('range', JSON.stringify(range));
-    };
-  }, [filter, products, range]);
-
-  const onChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value);
-    switch (event.target.value) {
-      case 'rating':
-        const sortByRating = [...products].sort(
-          (firstProd, secondProd) => secondProd.rating - firstProd.rating
-        );
-        setProducts(sortByRating);
-        break;
-      case 'highest price':
-        const sortByHighestPrice = [...products].sort(
-          (firstProd, secondProd) => secondProd.price - firstProd.price
-        );
-        setProducts(sortByHighestPrice);
-        break;
-      case 'lowest price':
-        const sortByLowestPrice = [...products].sort(
-          (firstProd, secondProd) => firstProd.price - secondProd.price
-        );
-        setProducts(sortByLowestPrice);
-        break;
-      default:
-        return products;
-    }
-  };
-  const onRangeHandler = () => {};
   return (
     <Container maxW="100%" p="4">
       <Box display="flex">
-        <CategoryList />
+        <CategoryList onChangeCategory={onChangeCategoryHandler} />
         <Select
           placeholder="Select filter"
           w="240px"
@@ -94,7 +97,7 @@ export default function HomePage() {
           focusBorderColor="accent"
           mr="4"
           value={filter}
-          onChange={onChangeHandler}
+          onChange={onChangeFilterHandler}
         >
           <option value="rating">From the highest rating</option>
           <option value="highest price">From the highest price</option>
@@ -106,7 +109,11 @@ export default function HomePage() {
           onClick={onRangeHandler}
         />
       </Box>
-      {products?.length > 0 && <ProductList products={products} />}
+      {products?.length > 0 ? (
+        <ProductList products={products} />
+      ) : (
+        <NoResult />
+      )}
       {products?.length >= 30 && products?.length < 100 && (
         <Box display="flex" justifyContent="center">
           <Button

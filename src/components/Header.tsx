@@ -46,7 +46,7 @@ export default function Header() {
         <StyledNavLink to="/cart">
           <Box position="relative">
             <StyledCart />
-            <ProductAmount>{cart.length}</ProductAmount>
+            {cart.length > 0 && <ProductAmount>{cart.length}</ProductAmount>}
           </Box>
         </StyledNavLink>
       </Flex>
